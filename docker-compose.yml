@@ -43,7 +43,7 @@ services:
   gateway:
     image: ghcr.io/message-manager-discord/gateway:latest
     restart: always
-    env-env_file:
+    env_file:
       - .gateway.env
       
 
