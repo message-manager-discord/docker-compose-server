@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:2022.2.2
+    restart: always
+    environment:
+      TUNNEL_URL: http://api:3000
+    command: "tunnel run"
+    volumes:
+      - ./cloudflared:/etc/cloudflared
+    links:
+      - api:api
+    depends_on:
+      - api
+  api: 
+    image: ghcr.io/message-manager-discord/backend:pr-2
+    restart: always
+    env_file:
+      - .backend.env
+    depends_on:
+      - gateway
+      - redisapicache
+      - postgres
+
+    command: >
+      sh -c "npm run migrate && npm run start"
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_DB=db
+      - POSTGRES_PASSWORD=passsadfl8jn3a01m
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts:/scripts
+
+  redisapicache:
+    image: redislabs/rejson:latest
+
+  gateway:
+    image: ghcr.io/message-manager-discord/gateway:latest
+    restart: always
+    environment:
+      REDIS_HOST: redisgw
+      REDIS_PORT: 6379
+      DISCORD_TOKEN: ODY0MDQ0NzE0MzA2MDQzOTA1.YOvuWQ.3hZ0RgN17hIXqrXcfezCXnzcfNU
+      LOGGING_LEVEL: info
+
+    depends_on:
+      - redisgw
+
+  redisgw:
+    image: redislabs/rejson:latest
+    restart: always
+
+volumes:
+  postgres-data: {}
