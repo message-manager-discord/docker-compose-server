@@ -43,11 +43,9 @@ services:
   gateway:
     image: ghcr.io/message-manager-discord/gateway:latest
     restart: always
-    environment:
-      REDIS_HOST: redisgw
-      REDIS_PORT: 6379
-      DISCORD_TOKEN: ODY0MDQ0NzE0MzA2MDQzOTA1.YOvuWQ.3hZ0RgN17hIXqrXcfezCXnzcfNU
-      LOGGING_LEVEL: info
+    env-env_file:
+      - .gateway.env
+      
 
     depends_on:
       - redisgw

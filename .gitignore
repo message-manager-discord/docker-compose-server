@@ -1,2 +1,3 @@
 .backend.env
+.gateway.env
 cloudflared
