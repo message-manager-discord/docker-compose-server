@@ -14,7 +14,7 @@ services:
     depends_on:
       - api
   api: 
-    image: ghcr.io/message-manager-discord/backend:pr-2
+    image: ghcr.io/message-manager-discord/backend:1
     restart: always
     env_file:
       - .backend.env
@@ -41,7 +41,7 @@ services:
     image: redislabs/rejson:latest
 
   gateway:
-    image: ghcr.io/message-manager-discord/gateway:latest
+    image: ghcr.io/message-manager-discord/gateway:1
     restart: always
     env_file:
       - .gateway.env
