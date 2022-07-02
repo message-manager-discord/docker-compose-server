@@ -1,0 +1,8 @@
+ingress:
+  - hostname: api--message.anothercat.me
+    service: http://api:3000
+
+  - hostname: metrics--message.anothercat.me
+    service: http://grafana:3000
+
+  - service: http_status:404
